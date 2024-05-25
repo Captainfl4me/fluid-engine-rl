@@ -27,5 +27,4 @@ RUN cd /emsdk && ls && . ./emsdk_env.sh && cd /app && ./build_wasm.sh
 FROM nginx:alpine as run
 
 COPY ./index.html /usr/share/nginx/html/
-COPY --from=build /app/target/wasm32-unknown-emscripten/release/spline-drawer.* /usr/share/nginx/html/
-COPY --from=build /app/target/wasm32-unknown-emscripten/release/spline_drawer.* /usr/share/nginx/html/
+COPY --from=build /app/target/wasm32-unknown-emscripten/release/*.{d,js,wasm} /usr/share/nginx/html/
