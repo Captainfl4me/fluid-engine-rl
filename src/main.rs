@@ -31,7 +31,7 @@ fn main() {
         .unwrap();
 
     let mut scenes: Vec<Box<dyn scenes::Scene>> = vec![
-        Box::<scenes::BasicFuildScene>::default(),
+        Box::<scenes::BasicFuildScene>::new(scenes::BasicFuildScene::new(&mut rl_handle, &rl_thread)),
     ];
     let mut current_scene: Option<usize> = None;
 
