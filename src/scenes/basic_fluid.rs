@@ -3,7 +3,7 @@ use crate::scenes::Scene;
 use raylib::prelude::*;
 
 const GRID_SIZE: (usize, usize) = (256, 128);
-const GRID_SPACING: f64 = 1.0; // 1 m
+const GRID_SPACING: f64 = 0.1; // 1 m
 const TIMESTEP: f64 = 0.1;
 const FLUID_DENSITY: f64 = 1000f64; // Water 1000 kg/m³
 
@@ -39,7 +39,7 @@ pub struct BasicFuildScene {
 impl BasicFuildScene {
     pub fn new(rl_handle: &mut RaylibHandle, rl_thread: &RaylibThread) -> Self {
         let mut grid = [[FluidCell::default(); GRID_SIZE.1]; GRID_SIZE.0];
-        let mut image = Image::gen_image_color(GRID_SIZE.0 as i32, GRID_SIZE.1 as i32, COLOR_RED);
+        let mut image = Image::gen_image_color(GRID_SIZE.0 as i32, GRID_SIZE.1 as i32, Color::new(0, 0, 0, 0));
 
         let wall_color = Color::new(0, 0, 0, 0);
         // Set static wall as boundary
@@ -47,7 +47,7 @@ impl BasicFuildScene {
         for (x_id, column) in grid.iter_mut().enumerate() {
             //column[0].state = CellState::Wall;
             column[height - 1].state = CellState::Wall;
-            image.draw_pixel(x_id as i32, 0, wall_color);
+            //image.draw_pixel(x_id as i32, 0, wall_color);
             image.draw_pixel(x_id as i32, (height - 1) as i32, wall_color);
         }
         let width = grid.len();
@@ -206,7 +206,7 @@ impl Scene for BasicFuildScene {
     }
 
     fn has_background(&self) -> bool {
-        true
+        false
     }
 
     fn help_text(&self) -> Vec<&str> {
@@ -234,9 +234,9 @@ impl Scene for BasicFuildScene {
                 let pressure_level = (self.fluid_grid[x_id][y_id].pressure - min_pressure_in_grid)
                     / (max_pressure_in_grid - min_pressure_in_grid);
                 let color = if self.fluid_grid[x_id][y_id].state == CellState::Wall {
-                    Color::new(0, 0, 0, 0)
+                    Color::new(0, 0, 0, 255)
                 } else {
-                    Color::new((pressure_level * 255.0) as u8, 0, 0, 255)
+                    hsl_to_rgb((1.0 - pressure_level) / 6.0, 1.0, 1.0)
                 };
                 self.render_image
                     .draw_pixel(x_id as i32, y_id as i32, color);
@@ -297,6 +297,6 @@ impl Scene for BasicFuildScene {
             .flat_map(|c| c.color_to_int().to_be_bytes())
             .collect();
         self.render_texture.update_texture(&arr);
-        rl_handle.draw_texture(&self.render_texture, 0, 0, COLOR_LIGHT);
+        rl_handle.draw_texture(&self.render_texture, (rl_handle.get_screen_width() - GRID_SIZE.0 as i32) / 2, (rl_handle.get_screen_height() - GRID_SIZE.1 as i32) / 2, COLOR_WHITE);
     }
 }
