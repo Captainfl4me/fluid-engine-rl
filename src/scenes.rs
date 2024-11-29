@@ -3,6 +3,8 @@ use raylib::drawing::RaylibDrawHandle;
 
 mod basic_fluid;
 pub use basic_fluid::BasicFuildScene;
+mod advection;
+pub use advection::AdvectionFuildScene;
 
 pub trait Scene {
     fn get_title(&self) -> &str;

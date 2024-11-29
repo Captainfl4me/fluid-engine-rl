@@ -4,6 +4,7 @@ use std::ffi::CStr;
 use std::time::Instant;
 
 mod scenes;
+mod fluid_engine;
 
 mod colors;
 use colors::*;
@@ -32,6 +33,7 @@ fn main() {
 
     let mut scenes: Vec<Box<dyn scenes::Scene>> = vec![
         Box::<scenes::BasicFuildScene>::new(scenes::BasicFuildScene::new(&mut rl_handle, &rl_thread)),
+        Box::<scenes::AdvectionFuildScene>::new(scenes::AdvectionFuildScene::new(&mut rl_handle, &rl_thread)),
     ];
     let mut current_scene: Option<usize> = None;
 
