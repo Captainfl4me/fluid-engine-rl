@@ -117,10 +117,10 @@ impl<const GRID_SIZE_X: usize, const GRID_SIZE_Y: usize> FluidDomain<GRID_SIZE_X
         let w11 = y_relative_pos;
 
         // Compute v
-        w00 * w10 * self.fluid_grid[x_id][y_id].velocity.0
-            + w01 * w10 * self.fluid_grid[x_id + 1][y_id].velocity.0
-            + w01 * w11 * self.fluid_grid[x_id + 1][y_id + 1].velocity.0
-            + w00 * w11 * self.fluid_grid[x_id][y_id + 1].velocity.0
+        w00 * w10 * self.fluid_grid[x_id][y_id].velocity.1
+            + w01 * w10 * self.fluid_grid[x_id + 1][y_id].velocity.1
+            + w01 * w11 * self.fluid_grid[x_id + 1][y_id + 1].velocity.1
+            + w00 * w11 * self.fluid_grid[x_id][y_id + 1].velocity.1
     }
 
     pub fn solve_grid_incompressibility(&mut self) {
